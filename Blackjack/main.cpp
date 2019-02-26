@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include "header.h"
 
+
 using namespace std;
 
 /****************************************************************
@@ -28,6 +29,7 @@ using namespace std;
  ****************************************************************/
 int main()
 {
+
     // VARIABLES
     int playerTotal;        // The player's total card value
     int dealerTotal;        // The dealer's total card value
