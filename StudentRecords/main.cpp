@@ -75,7 +75,7 @@ Student* getStudentRecords(ifstream &in,   // The input file stream
  ****************************************************************/
 void writeClassGrades(string className, // The name of the class
                       char course,      // The course code
-                      ofstream &out,    // The output stream
+                      ostream &out,    // The output stream
                       const Student *students, // The array of students
                       int numRecords);      // The number of students
 
@@ -84,7 +84,7 @@ void writeClassGrades(string className, // The name of the class
  *  This function writes the grade summary of all of the students
  *  organized by class name to the given output stream
  ****************************************************************/
-void writeGradeSummary(ofstream &out, // The output file stream
+void writeGradeSummary(ostream &out, // The output stream
                        const Student *students, // The student array
                        int numRecords); // The number of students
 
@@ -106,7 +106,8 @@ int main()
 
     // Receieve a valid input file name
     do{
-        cout << "Enter input file name: ";
+        cout << "Please enter the name of the input file." << endl;
+        cout << "Filename: ";
         getline(cin, inputFileName);
         cout << endl;
 
@@ -114,15 +115,12 @@ int main()
         in.open(inputFileName.c_str());
     }while(!in); // Loop if not opened
 
-    // Generate array based on input file
-    students = getStudentRecords(in, numRecords);
-
-    // Sort the array by last name
-    sortStudentsByLastName(students, numRecords);
+    cout << endl;
 
     // Receive a valid output file name
     do{
-        cout << "Enter output file name: ";
+        cout << "Please enter the name of the output file." << endl;
+        cout << "Filename: ";
         getline(cin, outputFileName);
         cout << endl;
 
@@ -130,8 +128,17 @@ int main()
         out.open(outputFileName.c_str());
     }while(!out); // Loop if not opened
 
+    // Generate array based on input file
+    students = getStudentRecords(in, numRecords);
+
+    // Sort the array by last name
+    sortStudentsByLastName(students, numRecords);
+
+    cout << "Processing Complete" << endl << endl;
+
     // Output the grade summary of the students
     writeGradeSummary(out, students, numRecords);
+    writeGradeSummary(cout, students, numRecords);
 
 
     // Deallocate the memory used by student array
@@ -380,7 +387,7 @@ Student* getStudentRecords(ifstream &in,   // The input file stream
  ****************************************************************/
 void writeClassGrades(string className, // The name of the class
                       char course,      // The course code
-                      ofstream &out,    // The output stream
+                      ostream &out,    // The output stream
                       const Student *students, // The array of students
                       int numRecords){      // The number of students
 
@@ -393,10 +400,10 @@ void writeClassGrades(string className, // The name of the class
     out << endl;
 
     // Output the class header
-    out << "Student Name                             Test Avg  Grade"
+    out << "Student Name                         Test Avg     Grade"
         << endl;
-    out << "------------------------"
-           "----------------------------------------" << endl;
+    out << "---------------------------------------------------"
+           "-------------" << endl;
 
     // INITIALIZE THE VARIABLES TO 0
     testSum = numStudents = 0;
@@ -422,16 +429,16 @@ void writeClassGrades(string className, // The name of the class
             strcat(name, temp.firstName);
 
             // OUTPUT name
-            out.width(41);
+            out.width(40);
             out << left << name;
 
             // OUTPUT test average
-            out.width(8);
+            out.width(4);
             out << right << temp.testAverage;
             testSum += temp.testAverage;
 
             // OUTPUT letter grade using getLetterGrade()
-            out.width(5);
+            out.width(8);
             out << right << getLetterGrade(temp.testAverage);
 
             out << endl;
@@ -441,18 +448,16 @@ void writeClassGrades(string className, // The name of the class
     }
     // OUTPUT class average
     out << endl;
-    out.width(41);
+    out.width(40);
     out << left << "Class Average";
-    out.width(8);
+    out.width(4);
     out << right << testSum / numStudents; // Calculate average
-    out.width(5);
+    out.width(8);
 
     // Get letter grade of average
     out << right << getLetterGrade(testSum / numStudents) << endl;
-    out << "----------------------"
-           "------------------------------------------" << endl;
-
-    out << endl << endl;
+    out << "---------------------------------------------------"
+           "-------------" << endl;
 }
 
 
@@ -461,7 +466,7 @@ void writeClassGrades(string className, // The name of the class
  *  This function writes the grade summary of all of the students
  *  organized by class name to the given output stream
  ****************************************************************/
-void writeGradeSummary(ofstream &out, // The output file stream
+void writeGradeSummary(ostream &out, // The output stream
                        const Student *students, // The student array
                        int numRecords){ // The number of students
 
@@ -473,19 +478,16 @@ void writeGradeSummary(ofstream &out, // The output file stream
     // OUTPUT header
     out << "Student Grade Summary" << endl;
     out << "---------------------" << endl;
-    out << endl;
+    out << endl << endl;
 
     // OUTPUT English class grades
     writeClassGrades("ENGLISH", 'E', out, students, numRecords);
-    out << endl;
 
     // OUTPUT History class grades
     writeClassGrades("HISTORY", 'H', out, students, numRecords);
-    out << endl;
 
     // OUTPUT Math class grades
     writeClassGrades("MATH", 'M', out, students, numRecords);
-    out << endl;
 
 
 }
